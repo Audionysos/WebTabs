@@ -1,6 +1,6 @@
 TODO:
 
-- Figure out how to get rid of this annoying puzzle icon ![](docs\puzzle_icon.PNG)
+- Figure out how to get rid of this annoying puzzle icon ![](docs/puzzle_icon.PNG)
 - ***** Search further if it's possible to specify name and path of saved file (without changing default download behavior)
   - Would been also nice to be able to append to a file
 - ****** Figure out how to start normal chrome instead of canary version.
