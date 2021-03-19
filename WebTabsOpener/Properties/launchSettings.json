@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WebTabsOpener": {
+      "commandName": "Project",
+      "commandLineArgs": "\"data\\test.tabs\""
+    }
+  }
+}

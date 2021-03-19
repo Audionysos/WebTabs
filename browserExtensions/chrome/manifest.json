@@ -1,0 +1,14 @@
+{
+	"manifest_version": 2,
+	"name": "Tabs to file saver",
+	"description": "Saves all tabs urls of current browser's window to a file",
+	"version": "1.0",
+	"permissions": ["tabs", "downloads"],
+	"background": {
+		"scripts": ["background.js"],
+		"persistent": false
+	},
+	"browser_action": {
+		"default_title": "Save tabs" 
+	}
+}
