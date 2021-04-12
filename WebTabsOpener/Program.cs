@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using static System.Console;
@@ -15,6 +16,8 @@ namespace WebTabsOpener {
 		static string targetProgram = "chrome.exe";
 
 		static void Main(string[] args) {
+			checkFileAssociation();
+
 			if(args.Length == 0) {
 				WriteLine("Spefiy path to file with list of paths to be oppened.");
 				return;
@@ -27,14 +30,18 @@ namespace WebTabsOpener {
 			var warnings = new List<string>();
 
 			var lnks = File.ReadAllLines(tabsFile);
-			if(!userApproves(lnks)) return;
 
 			var sb = new StringBuilder();
+			var tabs = new List<TabInfo>();
 			foreach (var l in lnks) {
 				var tab = parseTabLine(l.Trim());
+				tabs.Add(tab);
 				if(!linkIsValid(tab)) continue;
 				sb.Append($@"""{tab.url}"" ");
 			}
+			if(!userApproves(tabs)) return;
+
+
 			var arguments = sb.ToString();
 			Process.Start(new ProcessStartInfo() { 
 				FileName = targetProgram,
@@ -51,21 +58,38 @@ namespace WebTabsOpener {
 			ReadKey();
 		}
 
+		private static void checkFileAssociation() {
+			var p = FileTypeToProgramAssociator.getDefaultProgram(".tabs");
+			bool pathIsCurrent = false;
+			if(p != null) {
+				var pr = Process.GetCurrentProcess().MainModule.FileName;
+				pathIsCurrent = Path.GetFullPath(p).Equals(Path.GetFullPath(pr));
+			}
+			if (pathIsCurrent) return;
+			//TODO: Ask for assotiation
+
+		}
+
 		private static Regex addressMatch = new Regex(@" \w+:\/\/");
 		private static TabInfo parseTabLine(string l) {
 			var am = addressMatch.Match(l);
 			if (am.Index < 0) return null;
 			var t = l.Substring(0, am.Index);
-			var a = l.Substring(am.Index);
+			var a = l.Substring(am.Index).Trim();
 			return new TabInfo() { title = t, url = a };
 		}
 
-		private static bool userApproves(string[] lnks) {
+		private static bool userApproves(IReadOnlyList<TabInfo> tabs) {
 			if (!preview) return true;
 			WriteLine($@"The program will try to open following tabs with a ""{targetProgram}"":");
-			foreach (var l in lnks) {
-				WriteLine(l);
+			var pc = Console.ForegroundColor;
+			foreach (var l in tabs) {
+				ForegroundColor = ConsoleColor.Yellow;
+				Write(l.title);
+				ForegroundColor = ConsoleColor.Blue;
+				WriteLine(" " + l.url);
 			}
+			ForegroundColor = pc;
 			WriteLine("Do you want to proceed?[Y/N]");
 			string r = null;
 			while(r == null) {

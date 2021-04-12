@@ -7,3 +7,7 @@ TODO:
 - Check how to compile/pack the chrome extension.
 - Specify system-default program to run the `.tabs` files
 - Write docs for the configuration.
+- Add actual configuration file
+  - change target program (browser) path
+  - opening preview
+- Convert icon to support multiple sizes (current icon looks really bad in when small) 

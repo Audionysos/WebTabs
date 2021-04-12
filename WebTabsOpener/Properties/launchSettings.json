@@ -3,6 +3,10 @@
     "WebTabsOpener": {
       "commandName": "Project",
       "commandLineArgs": "\"data\\test.tabs\""
+    },
+    "newProfile1": {
+      "commandName": "Executable",
+      "commandLineArgs": "C:\\Users\\Paweł\\Desktop\\sixLaborsGraphics.tabs"
     }
   }
 }
