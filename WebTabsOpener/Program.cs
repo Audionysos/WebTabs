@@ -12,10 +12,10 @@ using static System.Console;
 namespace WebTabsOpener {
 	class Program {
 		static string tabsFile;
-		static bool preview = true;
-		static string targetProgram = "chrome.exe";
+		static TabsOppenerSettings settings = new TabsOppenerSettings();
 
 		static void Main(string[] args) {
+			loadConfig();
 			checkFileAssociation();
 
 			if(args.Length == 0) {
@@ -44,7 +44,7 @@ namespace WebTabsOpener {
 
 			var arguments = sb.ToString();
 			Process.Start(new ProcessStartInfo() { 
-				FileName = targetProgram,
+				FileName = settings.targetProgram,
 				Arguments = arguments,
 				UseShellExecute = true,
 			});
@@ -56,6 +56,18 @@ namespace WebTabsOpener {
 				WriteLine(w);
 			}
 			ReadKey();
+		}
+
+		private static void loadConfig() {
+			settings.load();
+			if (settings.issues.Count == 0) return;
+			var lc = ForegroundColor;
+			ForegroundColor = ConsoleColor.Red;
+			WriteLine("Program encountered some issues when loading configuration:");
+			foreach (var i in settings.issues) {
+				WriteLine("	" + i);
+			}
+			ForegroundColor = lc;
 		}
 
 		private static void checkFileAssociation() {
@@ -80,8 +92,8 @@ namespace WebTabsOpener {
 		}
 
 		private static bool userApproves(IReadOnlyList<TabInfo> tabs) {
-			if (!preview) return true;
-			WriteLine($@"The program will try to open following tabs with a ""{targetProgram}"":");
+			if (!settings.preview) return true;
+			WriteLine($@"The program will try to open following tabs with a ""{settings.targetProgram}"":");
 			var pc = Console.ForegroundColor;
 			foreach (var l in tabs) {
 				ForegroundColor = ConsoleColor.Yellow;

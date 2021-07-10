@@ -1,5 +1,6 @@
 TODO:
 
+- For some reason now the browsers just add tabs to existing window (tested in chrome canary and brave).
 - Figure out how to get rid of this annoying puzzle icon ![](docs/puzzle_icon.PNG)
 - ***** Search further if it's possible to specify name and path of saved file (without changing default download behavior)
   - Would been also nice to be able to append to a file
