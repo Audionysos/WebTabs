@@ -19,6 +19,7 @@ namespace WebTabsOpener {
 
 		public void load() {
 			_issues.Clear();
+			Console.WriteLine($@"path: {Path.GetFullPath(configFile)}");
 			if (!File.Exists(configFile)) {
 				createConfigFile();
 				_issues.Add($@"Config file not foud at ""{Path.GetFullPath(configFile)}"". New config file will be created.");
