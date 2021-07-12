@@ -22,13 +22,16 @@ namespace WebTabsOpener {
 		static void Main(string[] args) {
 			Environment.CurrentDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
 			loadConfig();
-			//FileTypeToProgramAssociator.remove(tabsFilesExtension);
 			checkFileAssociation();
 
 			if(args.Length == 0) {
+				var lc = ForegroundColor;
+				ForegroundColor = ConsoleColor.Blue;
 				WriteLine("Spefiy path to file with list of paths to be oppened.");
+				ForegroundColor = lc;
 				return;
 			}
+
 			tabsFile = args[0];
 			if (!File.Exists(tabsFile)) {
 				WriteLine($@"The file does not exist ""{tabsFile}""");
@@ -39,7 +42,11 @@ namespace WebTabsOpener {
 			var lnks = File.ReadAllLines(tabsFile);
 
 			var sb = new StringBuilder();
-			sb.Append(" /new-window ");
+
+			//TODO: Add configuration of arguments through config file
+			if(!Path.GetFileNameWithoutExtension(settings.targetProgram).ToLower()
+				.Equals("firefox")) sb.Append(" /new-window ");
+
 			var tabs = new List<TabInfo>();
 			foreach (var l in lnks) {
 				var tab = parseTabLine(l.Trim());
@@ -80,6 +87,7 @@ namespace WebTabsOpener {
 		}
 
 		private static void checkFileAssociation() {
+			//FileTypeToProgramAssociator.remove(tabsFilesExtension);
 			var p = FileTypeToProgramAssociator.getDefaultProgram(tabsFilesExtension);
 			bool pathIsCurrent = false;
 			var exePath = Process.GetCurrentProcess().MainModule.FileName;

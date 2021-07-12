@@ -1,0 +1,1 @@
+A chrome browser plugin. Read manifest.json
