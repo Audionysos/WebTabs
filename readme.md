@@ -50,7 +50,6 @@ The project currently don't have any installer or releases so you need to instal
 ##### TODO:
 
 - ***** In browser has not any windows already opened, the tabs will be add to the tabs of previously closed window (found in brave, chrome probably affected to)
-- Firefox opens first tab from list in a separated window
 - Figure out how to get rid of this annoying puzzle icon ![](docs/puzzle_icon.PNG)
 - ***** Search further if it's possible to specify name and path of saved file (without changing default download behavior)
   - Would been also nice to be able to append to a file
